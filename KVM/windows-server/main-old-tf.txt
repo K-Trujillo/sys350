@@ -1,0 +1,99 @@
+# Necessary Vars
+
+# HCL itself
+terraform {
+ required_providers {
+  libvirt = {
+   source = "dmacvicar/libvirt"
+   version = "~> 0.9"
+  }
+ }
+}
+
+provider "libvirt" {
+ uri = "qemu:///system"
+}
+
+resource "terraform_data" "disk" {
+ input = {
+  name = "${var.student_name}-${var.vm_name}"
+ }
+
+
+ provisioner "local-exec" {
+  command = "sudo cp ${var.image_path} /var/lib/libvirt/images/${var.student_name}-${var.vm_name}.qcow2"
+ }
+
+ provisioner "local-exec" {
+  when = destroy
+  command = "sudo rm -f /var/lib/libvirt/images/${self.input.name}.qcow2"
+ }
+}
+
+resource "libvirt_domain" "vm" {
+ name = "${var.student_name}-dc1"
+ memory = 2097152
+ vcpu = 4
+
+ cpu = {
+  mode = "host-passthrough"
+ }
+
+ os = {
+  type = "hvm"
+  type_machine = "q35"
+ }
+}
+
+devices = {
+ disks = [{
+  source = {
+   file = {
+    file = "/var/lib/libvirt/images/${var.student_name}-dc1.qcow2"
+   }
+  }
+  target = {
+   dev = "sda"
+   bus = "sata"
+  }
+  driver = {
+   type = "qcow2"
+  }
+ }]
+}
+
+devices = {
+ interfaces = [{
+  source = {
+   network = {
+    network = "default"
+   }
+  }
+  model = {
+   type = "e1000e"
+  }
+ }]
+}
+
+devices = {
+ graphics = [{
+  spice = {
+   auto_port = true
+   listen = "0.0.0.0"
+  }
+ }]
+}
+
+serials = [{
+ type = "pty"
+}]
+
+consoles = [{
+ type = "pty"
+ target = {
+  type = "serial"
+  port = 0
+ }
+}]
+
+autostart = true
