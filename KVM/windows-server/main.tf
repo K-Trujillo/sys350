@@ -131,8 +131,9 @@ resource "libvirt_domain" "windows_server" {
   target = {
    type = "serial"
    port = 0
-  }
- }]
+   }
+  }]
+ }
 
  depends_on = [
   terraform_data.disk 
