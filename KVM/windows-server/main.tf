@@ -1,3 +1,17 @@
+# Header
+terraform {
+ required_providers {
+  libvirt = {
+   source = "dmacvicar/libvirt"
+   version = "~> 0.9"
+  }
+ }
+}
+
+provider "libvirt" {
+ uri = "qemu:///system"
+}
+
 # Necessary Vars
 variable "student_name" {
  type = string
@@ -33,19 +47,6 @@ variable "vm_name" {
 }
 
 # HCL itself
-terraform {
- required_providers {
-  libvirt = {
-   source = "dmacvicar/libvirt"
-   version = "~> 0.9"
-  }
- }
-}
-
-provider "libvirt" {
- uri = "qemu:///system"
-}
-
 resource "terraform_data" "disk" {
  input = {
   name = "${var.student_name}-${var.vm_name}"
