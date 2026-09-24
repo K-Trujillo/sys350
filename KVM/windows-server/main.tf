@@ -64,12 +64,12 @@ resource "terraform_data" "disk" {
 }
 
 resource "libvirt_domain" "windows_server" {
-  name        = "${var.student_name}-${var.vm_name}"
-  memory      = var.ram_size
+  name = "${var.student_name}-${var.vm_name}"
+  memory = var.ram_size
   memory_unit = "KiB"
-  vcpu        = var.cpu_cores
-  type        = "kvm"
-  autostart   = true
+  vcpu = var.cpu_cores
+  type = "kvm"
+  autostart = true
 
   cpu = {
     mode = "host-passthrough"
