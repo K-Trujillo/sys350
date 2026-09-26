@@ -64,12 +64,12 @@ resource "terraform_data" "disk" {
 }
 
 resource "libvirt_domain" "windows_server" {
-  name = "${var.student_name}-${var.vm_name}"
-  memory = var.ram_size
+  name        = "${var.student_name}-${var.vm_name}"
+  memory      = var.ram_size
   memory_unit = "KiB"
-  vcpu = var.cpu_cores
-  type = "kvm"
-  autostart = true
+  vcpu        = var.cpu_cores
+  type        = "kvm"
+  autostart   = true
 
   cpu = {
     mode = "host-passthrough"
@@ -89,54 +89,52 @@ resource "libvirt_domain" "windows_server" {
 
   devices = {
     disks = [{
-      source = {
-        file = {
-          file = "/var/lib/libvirt/images/${var.student_name}-${var.vm_name}.qcow2"
+        source = {
+          file = {
+            file = "/var/lib/libvirt/images/${var.student_name}-${var.vm_name}.qcow2"
+          }
         }
-      }
-
-      driver = {
-        type = "qcow2"
-      }
-
-      target = {
-        dev = "sda"
-        bus = "sata"
-      }
-    }]
+        driver = {
+          type = "qcow2"
+        }
+        target = {
+          dev = "sda"
+          bus = "sata"
+        }]
 
     interfaces = [{
-      source = {
-        network = {
-          network = "default"
+        source = {
+          network = {
+            network = "default"
+          }
         }
-      }
-      model = {
-        type = "e1000e"
-      }
-    }]
+        model = {
+          type = "e1000e"
+        }
+      }]
 
     graphics = [{
-      spice = {
-        auto_port = true
-        listen    = "0.0.0.0"
-      }
-    }]
+        spice = {
+          auto_port = true
+          listen    = "0.0.0.0"
+        }
+      }]
+
+  # Needs
+  running = true
 
     serials = [{
-      type = "pty"
-    }]
+        type = "pty"
+      }]
 
     consoles = [{
-      type = "pty"
-      target = {
-        type = "serial"
-        port = 0
-      }
-    }]
+        type = "pty"
+        target = {
+          type = "serial"
+          port = 0
+        }
+      }]
   }
-  # NEED THIS FOR IT TO TURN ON!!!!
-  running = true
 
   depends_on = [
     terraform_data.disk
