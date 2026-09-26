@@ -87,10 +87,9 @@ resource "libvirt_domain" "windows_server" {
     apic = {}
   }
 
-
   devices = {
     disks = [
-     {
+      {
         source = {
           file = {
             file = "/var/lib/libvirt/images/${var.student_name}-${var.vm_name}.qcow2"
@@ -103,6 +102,8 @@ resource "libvirt_domain" "windows_server" {
           dev = "sda"
           bus = "sata"
         }
+      }
+    ]
 
     interfaces = [
       {
@@ -126,17 +127,16 @@ resource "libvirt_domain" "windows_server" {
       }
     ]
 
-    # Needs
     running = true
 
     serials = [
       {
         type = "pty"
-     }
+      }
     ]
 
     consoles = [
-     {
+      {
         type = "pty"
         target = {
           type = "serial"
