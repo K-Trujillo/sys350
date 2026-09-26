@@ -135,6 +135,8 @@ resource "libvirt_domain" "windows_server" {
       }
     }]
   }
+  # NEED THIS FOR IT TO TURN ON!!!!
+  running = true
 
   depends_on = [
     terraform_data.disk
