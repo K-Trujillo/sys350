@@ -87,10 +87,15 @@ resource "libvirt_domain" "windows_server" {
     apic = {}
   }
 
-
+<<<<<<< HEAD
   devices = {
     disks = [
      {
+=======
+devices = {
+    disks = [
+      {
+>>>>>>> 47bfbc7c2f05eee9b46e9325e37b8604860a076a
         source = {
           file = {
             file = "/var/lib/libvirt/images/${var.student_name}-${var.vm_name}.qcow2"
@@ -103,9 +108,18 @@ resource "libvirt_domain" "windows_server" {
           dev = "sda"
           bus = "sata"
         }
+<<<<<<< HEAD
+    ]
+
+    interfaces = [
+       {
+=======
+      }
+    ]
 
     interfaces = [
       {
+>>>>>>> 47bfbc7c2f05eee9b46e9325e37b8604860a076a
         source = {
           network = {
             network = "default"
@@ -118,7 +132,11 @@ resource "libvirt_domain" "windows_server" {
     ]
 
     graphics = [
+<<<<<<< HEAD
+     {
+=======
       {
+>>>>>>> 47bfbc7c2f05eee9b46e9325e37b8604860a076a
         spice = {
           auto_port = true
           listen    = "0.0.0.0"
@@ -126,17 +144,26 @@ resource "libvirt_domain" "windows_server" {
       }
     ]
 
+<<<<<<< HEAD
     # Needs
     running = true
 
     serials = [
+     {
+=======
+    serials = [
       {
+>>>>>>> 47bfbc7c2f05eee9b46e9325e37b8604860a076a
         type = "pty"
-     }
+      }
     ]
 
     consoles = [
-     {
+<<<<<<< HEAD
+    {
+=======
+      {
+>>>>>>> 47bfbc7c2f05eee9b46e9325e37b8604860a076a
         type = "pty"
         target = {
           type = "serial"
