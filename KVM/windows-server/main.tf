@@ -88,7 +88,8 @@ resource "libvirt_domain" "windows_server" {
   }
 
   devices = {
-    disks = [{
+    disks = [
+     {
         source = {
           file = {
             file = "/var/lib/libvirt/images/${var.student_name}-${var.vm_name}.qcow2"
@@ -100,9 +101,11 @@ resource "libvirt_domain" "windows_server" {
         target = {
           dev = "sda"
           bus = "sata"
-        }]
+        }
+    ]
 
-    interfaces = [{
+    interfaces = [
+       {
         source = {
           network = {
             network = "default"
@@ -111,29 +114,36 @@ resource "libvirt_domain" "windows_server" {
         model = {
           type = "e1000e"
         }
-      }]
+      }
+    ]
 
-    graphics = [{
+    graphics = [
+     {
         spice = {
           auto_port = true
           listen    = "0.0.0.0"
         }
-      }]
+      }
+    ]
 
-  # Needs
-  running = true
+    # Needs
+    running = true
 
-    serials = [{
+    serials = [
+     {
         type = "pty"
-      }]
+      }
+    ]
 
-    consoles = [{
+    consoles = [
+    {
         type = "pty"
         target = {
           type = "serial"
           port = 0
         }
-      }]
+      }
+    ]
   }
 
   depends_on = [
