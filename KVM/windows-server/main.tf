@@ -126,9 +126,7 @@ resource "libvirt_domain" "windows_server" {
         }
       }
     ]
-
-    running = true
-
+   
     serials = [
       {
         type = "pty"
@@ -149,6 +147,8 @@ resource "libvirt_domain" "windows_server" {
   depends_on = [
     terraform_data.disk
   ]
+
+  running = true
 }
 
 # Outputs
