@@ -1,0 +1,1 @@
+Connection failed: SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for kris-db failed: Name or service not known
