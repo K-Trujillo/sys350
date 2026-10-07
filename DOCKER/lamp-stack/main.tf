@@ -27,15 +27,23 @@ resource "docker_image" "mysql" {
 }
 
 # Container
+resource "docker_image" "web" {
+  name = "${var.student_name}-lamp-web:latest"
+  build {
+    context    = abspath("${path.module}/php")
+    dockerfile = "Dockerfile"
+  }
+}
+
 resource "docker_container" "db" {
   name  = "${var.student_name}-db"
   image = docker_image.mysql.image_id
 
   env = [
-    "DB_HOST=${var.student_name}-db",   # jsmith-db or mgarcia-db
-    "DB_USER=${var.mysql_user}",
-    "DB_PASSWORD=${var.mysql_password}",
-    "DB_NAME=${var.mysql_database}",
+    "MYSQL_ROOT_PASSWORD=${var.mysql_root_password}",
+    "MYSQL_DATABASE=${var.mysql_database}",
+    "MYSQL_USER=${var.mysql_user}",
+    "MYSQL_PASSWORD=${var.mysql_password}",
   ]
 
   volumes {
@@ -51,15 +59,6 @@ resource "docker_container" "db" {
   networks_advanced {
     name = docker_network.lamp_network.name
   }
-}
-
-# Image
-resource "docker_image" "web" {
- name = "${var.student_name}-lamp-web:latest"
- build {
-  context = abspath("${path.module}/php")
-  dockerfile = "Dockerfile"
- }
 }
 
 # Web
