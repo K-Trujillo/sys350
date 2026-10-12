@@ -159,3 +159,34 @@ locals {
     cloud_init = local.os_defaults[cfg.os].cloud_init
   } }
 }
+
+# Phase 3 cause I forgot to label phase 2 oops
+resource "docker_network" "segment" {
+  for_each = toset(var.networks)
+
+  name   = "${var.student_name}-${each.value}-net"
+  driver = "bridge"
+}
+
+resource "docker_container" "service" {
+  for_each = var.services
+
+  name  = "${var.student_name}-${each.key}"
+  image = each.value.image
+
+  networks_advanced {
+    name = "${var.student_name}-${each.value.network}-net"
+  }
+
+  dynamic "ports" {
+    for_each = each.value.ports
+    content {
+      internal = ports.value.internal
+      external = ports.value.external
+    }
+  }
+
+  env = [for k, v in each.value.env : "${k}=${v}"]
+
+  restart = "unless-stopped"
+}
