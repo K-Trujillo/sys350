@@ -1,0 +1,30 @@
+hostname: ${hostname}
+fqdn: ${hostname}.local
+
+users:
+  - default
+  - name: ${student_name}
+    gecos: "Student User"
+    sudo: "ALL=(ALL) NOPASSWD:ALL"
+    groups: users, admin
+    shell: /bin/bash
+    lock_passwd: false
+    hashed_passwd: $6$mEPpmrbkrQyJZSS5$K4ltFakNQBoAu55n2Qz1pIVA/kp/rkRMbqbia9IpD.Z/tyYnBTIPB6Th1eEN6j9w5mgBZo89GGWzH6NqTpwdA.
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+
+ssh_pwauth: true
+
+package_update: true
+packages:
+  - openssh-server
+  - curl
+  - wget
+  - vim
+  - git
+  - net-tools
+
+runcmd:
+  - echo 'root:$6$mEPpmrbkrQyJZSS5$K4ltFakNQBoAu55n2Qz1pIVA/kp/rkRMbqbia9IpD.Z/tyYnBTIPB6Th1eEN6j9w5mgBZo89GGWzH6NqTpwdA.' | chpasswd -e
+  - systemctl restart sshd
+  - echo "${hostname} - SYS-350 Enterprise VM" > /etc/motd
